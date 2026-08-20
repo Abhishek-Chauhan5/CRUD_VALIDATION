@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student CRUD</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            min-height: 100vh;
+            padding: 50px 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: auto;
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        .add-btn {
+            display: inline-block;
+            background: #4a90e2;
+            color: white;
+            text-decoration: none;
+            padding: 11px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+            margin-bottom: 25px;
+            transition: 0.3s;
+        }
+
+        .add-btn:hover {
+            background: #357abd;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        th {
+            background: #4a90e2;
+            color: white;
+            padding: 14px;
+            text-align: left;
+        }
+
+        td {
+            padding: 13px 14px;
+            border-bottom: 1px solid #ddd;
+            color: #444;
+        }
+
+        tr:hover {
+            background: #f8f9fa;
+        }
+
+        .edit-btn {
+            display: inline-block;
+            background: #28a745;
+            color: white;
+            text-decoration: none;
+            padding: 7px 12px;
+            border-radius: 5px;
+            font-size: 14px;
+            margin-right: 5px;
+            transition: 0.3s;
+        }
+
+        .edit-btn:hover {
+            background: #218838;
+        }
+
+        .delete-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #c82333;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 25px;
+            color: #777;
+            font-style: italic;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 20px;
+                overflow-x: auto;
+            }
+
+            table {
+                min-width: 650px;
+            }
+
+            h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <h1>Student Management</h1>
+
+    <a class="add-btn" href="{% url 'student_create' %}">
+        Add Student
+    </a>
+
+    <br><br>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Age</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for student in students %}
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>{{ student.name }}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.age }}</td>
+
+            <td>
+                <a class="edit-btn"
+                   href="{% url 'student_update' student.id %}">
+                    Edit
+                </a>
+
+                <form
+                    method="POST"
+                    action="{% url 'student_delete' student.id %}"
+                    style="display:inline;"
+                >
+                    {% csrf_token %}
+
+                    <button class="delete-btn" type="submit">
+                        Delete
+                    </button>
+                </form>
+            </td>
+        </tr>
+
+        {% empty %}
+        <tr>
+            <td class="empty-message" colspan="5">
+                No students found.
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</div>
+
+</body>
+</html>
